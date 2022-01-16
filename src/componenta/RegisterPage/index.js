@@ -1,9 +1,6 @@
 import React, { useRef, useState } from 'react'
-
 import { Link } from 'react-router-dom';
-
 import { useForm } from 'react-hook-form';
-
 import firebase from '../../firebase';
 
 import md5 from 'md5';
@@ -11,151 +8,63 @@ import md5 from 'md5';
 
 
 function RegisterPage() {
-
-
-
+    // 유효성체크 해주는 라이브러리
     const { register, watch, formState: { errors }, handleSubmit } = useForm();
-
-    const [errorFromSubmit, setErrorFromSubmit] = useState("")
-
-    const [loading, setLoading] = useState(false);
-
-
-
-    const password = useRef();
-
-    password.current = watch("password");
-
-
+    const {errorFromSubmit, setErrorFromSubmit} =useState('')
 
     const onSubmit = async (data) => {
-
-
-
+        // uuseForm에서 유효성체크 하구 넘어온 데이터를 파라미터로 받는다.
         try {
-
-            setLoading(true)
-
-            let createdUser = await firebase
-
-                .auth()
-
-                .createUserWithEmailAndPassword(data.email, data.password)
-
-            console.log('createdUser', createdUser)
-
-
-
-            await createdUser.user.updateProfile({
-
-                displayName: data.name,
-
-                photoURL: `http://gravatar.com/avatar/${md5(createdUser.user.email)}?d=identicon`
-
-            })
-
-
-
-            //Firebase 데이터베이스에 저장해주기
-
-            await firebase.database().ref("users").child(createdUser.user.uid).set({
-
-                name: createdUser.user.displayName,
-
-                image: createdUser.user.photoURL
-
-            })
-
-
-
-            setLoading(false)
-
-        } catch (error) {
-
+            let creatUser = await firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+        }catch (e) {
             setErrorFromSubmit(error.message)
-
-            setLoading(false)
-
-            setTimeout(() => {
-
-                setErrorFromSubmit("")
-
-            }, 5000);
-
+            setTimeout(()=>{
+                setE
+            })
         }
-
-
-
-
     }
-
-
 
     return (
 
         <div className="auth-wrapper">
-
             <div style={{ textAlign: 'center' }}>
-
                 <h3>Register</h3>
-
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-
                 <label>Email</label>
-
                 <input
-
                     name="email"
-
                     type="email"
-
                     {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
-
                 />
 
                 {errors.email && <p>This email field is required</p>}
 
-
-
                 <label>Name</label>
-
                 <input
-
                     name="name"
-
                     {...register("name", { required: true, maxLength: 10 })}
 
                 />
 
                 {errors.name && errors.name.type === "required" && <p>This name field is required</p>}
-
                 {errors.name && errors.name.type === "maxLength" && <p>Your input exceed maximum length</p>}
 
-
-
                 <label>Password</label>
-
                 <input
-
                     name="password"
-
                     type="password"
-
                     {...register("password", { required: true, minLength: 6 })}
-
                 />
 
                 {errors.password && errors.password.type === "required" && <p>This password field is required</p>}
-
                 {errors.password && errors.password.type === "minLength" && <p>Password must have at least 6 characters</p>}
 
 
 
                 <label>Password Confirm</label>
-
-                <input
+                <inpu
 
                     name="password_confirm"
 
