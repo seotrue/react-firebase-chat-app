@@ -36,3 +36,11 @@ return (
 ### 사용 모듈
 - react-hook-form: 손쉡게 유효성체크를 도와준다.
 
+
+## 강의 챕터별 정리
+#### firebase에서 이메일로 유저 생성시 생기는 문제점
+- 서브밋을 하면 firebase에서 에러를 던져준다 -> firebase의 콘솔에서 authencatuin,에서 해당 인증 방법을을 enable 해줘야함
+(firebase에서 이메일로 회원가입 할수 있게 허락해주기)
+Aythentication의 Sign-i method에서 제공하는 방법중 할 방법 enable 해주기
+
+#### firebase에 생성한 유저에 상세 정보 추가하기
