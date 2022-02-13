@@ -62,3 +62,13 @@ Realtime Database!
 signInWithEmailAndPassword 메서드를 이용해서 로그인을 할것임 (메서드 안에 사용자가 입력한 이메일과 패스와드를  보내줌)
 
 ####  인증된 이후에 페이지 이동 & useHistory
+- useHistory를 사용해두 에러가 생김 -> 원인은 
+App 컴포넌트가 BrowerRouter보다 밑에(BrowerRouterrk App을 감싸구 있어야 App안에서 history를 사용가능)
+App 컴포넌트 상위인 index.js에사
+```<BrouserRouer>
+    <App />
+</BrouserRouer
+```  
+- 이런식을 감싸주자!  
+
+#### Redux 스토에어 로그인 유저 정보 저장
