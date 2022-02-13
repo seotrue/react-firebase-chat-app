@@ -20,7 +20,22 @@ function RegisterPage() {
             setLoading(true)
             // 비동기로 파이어베이스에게 이렇게 데이터를 넘기면 파베에서 만듬 -> 결과값을 createUser에 담김
             let creatUser = await firebase.auth() // auth 서비스에 접근
-                .createUserWithEmailAndPassword(data.email, data.password)
+                .createUserWithEmailAndPassword(data.email, data.password);
+
+            //updateProfile FB 메소드 업데이트 하는
+            await creatUser.user.updateProfile({
+                displayName: data.name,
+                photoURL:`http://gravatar.com/avatar/${md5(creatUser.user.email)}` // 유니크한 값을 만들어줌
+            })
+
+            // Firebase 데이터베이스에 저장해주기
+            await firebase.database() // firebase의 데이터 베이스에 접급
+                .ref('users')// 저희가 접근하고자하는 데이터베이스의 위치(데이블 이름)
+                .child(creatUser.user.uid)// row의 아이디(유저의 아디) creatUser.user.uid => 유저의 유니크한 아이디 를 넣어줌
+                .set({ // 유저의 유니크한 아이디 아래에 해당 정보를 넣어줌
+                    name: creatUser.user.displayName,
+                    image: creatUser.user.photoURL
+                })
             setLoading(false)
         }catch (e) {
             setErrorFromSubmit(error.message)
