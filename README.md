@@ -71,4 +71,80 @@ App 컴포넌트 상위인 index.js에사
 ```  
 - 이런식을 감싸주자!  
 
-#### Redux 스토에어 로그인 유저 정보 저장
+#### 채팅페이지 UI
+```javascript
+// 컴포넌트 구조
+<ChatPage>
+    <sidePanel>
+        <UserPanel/>
+        <Favorited/>
+        <ChatRooms/>
+        <DireactMessages/>
+    </sidePanel>
+
+    <MainPanel>
+        <MessageHeader/>
+        <Message/>
+        <MessageForm/>
+    </MainPanel>
+</ChatPage>
+```
+
+##### 로그아웃 & 리덕스 스토어 유저 정보 지워주기
+- 로그인도 firebase햇으니 로그아웃도 firebase.auto()를 통해 접근후 제공해주는 siginOut() 메소드로 해야함
+
+#### 프로필 이미지 수정
+- firebase storage에 이미지 파일 넣어주고 이미지에 대한 정보(어디에 저장됫는지, 크기 등등)
+firebase DB에 넣어준다 그정보는
+
+proccess
+1. 프로필 변경 클릭하면 이미지 업로드 패널이 나오게 한다.
+ - 업로드 패널이 나올려면 input type file사용 -> 
+ useRef을 이용해 디폴트 이미지 업로드 패널은 style변경이 안되니 
+ display: none으로 안보이게 함
+ style 먹인 div를 클릭하면 임의로input type file 클릭되게 
+ input type file에 연결한 useRef로 만든 ref클릭 되도록  
+ 
+ ```javascript
+// 파이어베이스에게 업로드한 이미지 전달
+    const handleUploadImage = () => {
+        // 해주기 전에 firebase 스토리지 사용할수 있게 설정하기
+        // firebase 콘솔가서 storage클릭 -> 시작하기 클릭 
+    }
+
+```
+
+```javascript
+// 파이어베이스에게 업로드한 이미지 전달
+
+    const handleUploadImage =async (event) => {
+        // 해주기 전에 firebase 스토리지 사용할수 있게 설정하기
+        let file = event.target.file[0];
+        console.log(file,'file');
+
+        const metadata = {contentType: mime.lookup(file.name)}
+        if (!file) return;
+
+        try {
+            let uploadTaskSnapshot = await firebase.storage()// firebase 스토리지에 접근
+                .ref()
+                .child(`user_image/${user.uid}`) // 이미지 파일이 어디에 저장이 되는지 정해주는거임
+                .put(file, metadata) // 파일을 넣어줄땐 put 사용
+            //
+            // put
+            //
+            // 첫번째 인자로 파일의 데이터
+            //
+            // 두번째 인자로 메타 데이터(콘텐츠 데이터 타입)
+
+            console.log(uploadTaskSnapshot,'uploadTaskSnapshot') // 업러드가 잘되면 response 가 옴
+        } catch (e) {
+
+        }
+        // 1. 이미지 클릭후 FB 스토리지에 저장
+
+            //mime이라는 라이브러리가 잇음 lookup 하면 자동으로 파일타입이 무엇인지 리턴해줌
+        // npm i mime-types --save
+
+    }
+```
