@@ -147,4 +147,12 @@ proccess
         // npm i mime-types --save
 
     }
-```
+````
+
+- 순서
+1. irebase storage에 이미지 파일 넣어주고 이미지에 대한 정보(어디에 저장됫는지, 크기 등등)
+   firebase DB에 넣어준다 그정보는
+   그리고 디스패치의 img url도 변경해줘야만 화면단에서 이미지 변경두 이루워진다.
+   
+
+#### 채팅 룸 리스트 URL

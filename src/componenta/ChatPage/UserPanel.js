@@ -2,12 +2,15 @@ import React, {useRef} from 'react';
 import  { IoIosChatboxes } from "react-icons/io";
 import Dropdown from "react-bootstrap/dropdown";
 import Image from 'react-bootstrap/Image'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import firebase from "../../firebase";
 import mime from 'mime-types'
+import { setPhotoURL } from '../../redux/actions/user_actions'
+
 const UserPanel = () => {
     // 로그인한 유저 정보 가져오기
     const user = useSelector(state => state.user.currentUser);
+    const dispatch = useDispatch()
     const inputOpenImageRef = useRef()
     const handleLogout = () => {
         firebase.auth().signOut();
@@ -32,15 +35,24 @@ const UserPanel = () => {
             let uploadTaskSnapshot = await firebase.storage()// firebase 스토리지에 접근
                 .ref()
                 .child(`user_image/${user.uid}`) // 이미지 파일이 어디에 저장이 되는지 정해주는거임
-                .put(file, metadata) // 파일을 넣어줄땐 put 사용
-            //
-            // put
-            //
-            // 첫번째 인자로 파일의 데이터
-            //
-            // 두번째 인자로 메타 데이터(콘텐츠 데이터 타입)
+                .put(file, metadata) // 파일을 넣어줄땐 put 사용 첫번째 인자로 파일의 데이터,두번째 인자로 메타 데이터(콘텐츠 데이터 타입)
 
             console.log(uploadTaskSnapshot,'uploadTaskSnapshot') // 업러드가 잘되면 response 가 옴
+            let downloadUrl = await  uploadTaskSnapshot.ref.getDownloadURL(); // 스토리지에서 꺼낸다 url을
+            await firebase.auth().currentUser.updateProfile({
+                photoURL: downloadUrl
+            })
+
+            // firebase 스토리지, 유저의 이미지 url를 변경해줫으면 리덕스 안에서두 변경해줘야한다.
+
+            dispatch(setPhotoURL(downloadUrl));
+
+            // epdlxjqpdltmdp 이미지 url저장
+            await firebase.database.ref() // 데이블
+                .child(user.uid) // row 부분 '
+                .update({
+                    image: downloadUrl
+                })
         } catch (e) {
 
         }
