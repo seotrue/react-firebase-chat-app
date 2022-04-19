@@ -9,9 +9,33 @@ import { FaRegSmileWink } from 'react-icons/fa';
 class ChatRooms extends Component {
     state ={
         show: false,
+        chatRooms:[]
     }
     handleClose = () => this.setState({ show: false })
     handleShow = () => this.setState({ show: true })
+
+    componentDidMount() {
+        this. addCahtRomsListeners()
+    }
+
+    renderChatRooms = () => {
+
+    }
+
+
+    // 리스너로 채팅룸을 가져오는 함수
+    addCahtRomsListeners = ()=> {
+        let chatRoomsArray = [];
+        // 파이어 베이스 db의 chatRoomsRef테이블을 말함
+        this.state.chatRoomsRef.on('child_added', DataSnapshot => {
+            chatRoomsArray.push(DataSnapshot.val())
+            this.setState({
+                chatRooms: chatRoomsArray
+            }, () => this.setFirstChatRooms())
+        })
+    };
+
+
 
     render() {
         return (

@@ -150,9 +150,40 @@ proccess
 ````
 
 - 순서
-1. irebase storage에 이미지 파일 넣어주고 이미지에 대한 정보(어디에 저장됫는지, 크기 등등)
+1. firebase storage에 이미지 파일 넣어주고 이미지에 대한 정보(어디에 저장됫는지, 크기 등등)
    firebase DB에 넣어준다 그정보는
    그리고 디스패치의 img url도 변경해줘야만 화면단에서 이미지 변경두 이루워진다.
    
 
 ####  채팅룸 생성
+
+
+
+### Firebase에서 데이터 실시간으로 받기
+Add된 데[이터 listerer로 받기
+dataSnapshot => 실시간 지켜보는 리스너를 뜻하는거 같음
+
+```javascript
+addCahtRomsListeners = ()=> {
+        let chatRoomsArray = [];
+        // 파이어 베이스 db의 chatRoomsRef테이블을 말함
+        this.state.chatRoomsRef.on('child_added', DataSnapshot => {
+            chatRoomsArray.push(DataSnapshot.val())
+        })
+    }
+
+```
+ 
+ 메세지 저장
+ 메세지 콜랙션
+ 메서지방 아이디
+ 메시지마다으의 id
+ 
+ habndlesybmit -> 로딩 실행
+ messageRef은 메세지가 잇는 테이블을 접근할때 사용
+ 
+ messageRef.child(chatRoomId) // 채팅방 아이디
+ .push // 메시지를 넣는 거니깐 푸시
+ .set(createMessge())
+ createMessge => 메세지 정보에 대한 함수를 만들어준다
+ 
